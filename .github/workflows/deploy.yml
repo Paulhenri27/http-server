@@ -1,0 +1,32 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ main ]           # which branch should trigger a deploy?
+
+permissions:
+  contents: read
+  packages: write               # allows this workflow to push to GHCR
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm                # the Arm runner, so the image matches your VM
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/paulhenri27/http-server:latest
+            ghcr.io/paulhenri27/http-server:${{ github.sha }}
