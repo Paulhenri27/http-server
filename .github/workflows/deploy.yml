@@ -30,3 +30,17 @@ jobs:
           tags: |
             ghcr.io/paulhenri27/http-server:latest
             ghcr.io/paulhenri27/http-server:${{ github.sha }}
+  deploy:
+    needs: build                  # this job must wait for which job?
+    runs-on: ubuntu-latest      # just runs SSH, so the architecture doesn't matter here
+    steps:
+      - name: Deploy on the VM over SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            docker pull ghcr.io/paulhenri27/http-server:latest
+            docker run --rm --name myapp ghcr.io/paulhenri27/http-server:latest
+            docker image prune -f
