@@ -44,5 +44,5 @@ jobs:
             set -e
             docker pull ghcr.io/paulhenri27/http-server:latest
             docker rm -f myapp 2>/dev/null || true
-            docker run --rm --name myapp ghcr.io/paulhenri27/http-server:latest
+            docker run -d --restart unless-stopped --name myapp -p 8080:8080 ghcr.io/paulhenri27/http-server:latest
             docker image prune -f
