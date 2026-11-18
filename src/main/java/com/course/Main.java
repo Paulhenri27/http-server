@@ -1,7 +1,6 @@
 package com.course;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -11,14 +10,11 @@ public class Main
     {
         try(ServerSocket serverSocket = new ServerSocket(8080))
         {
-            try(Socket socket = serverSocket.accept();
-                PrintWriter out = new PrintWriter(socket.getOutputStream()))
+            while(true)
             {
-                out.println("Hello from server");
-            }
-            catch(IOException e)
-            {
-               System.err.println("Error: " + e.getMessage());
+                Socket socket = serverSocket.accept();
+                EchoServer echoServer = new EchoServer(socket);
+                echoServer.start();
             }
         }
 
