@@ -26,7 +26,7 @@ public class EchoServer extends Thread
 
             String[] header = requestLine.split(" ");
 
-            Arrays.stream(header).forEach(System.out::println);
+            Arrays.stream(header).forEach(element -> System.out.println("Element: " + element));
         }
         catch (IOException e)
         {
