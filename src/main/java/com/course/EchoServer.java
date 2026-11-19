@@ -2,6 +2,7 @@ package com.course;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class EchoServer extends Thread
 {
@@ -23,7 +24,9 @@ public class EchoServer extends Thread
         {
             String requestLine = in.readLine();
 
-            System.out.println(requestLine);
+            String[] header = requestLine.split(" ");
+
+            Arrays.stream(header).forEach(element -> System.out.println("Element: " + element));
         }
         catch (IOException e)
         {
